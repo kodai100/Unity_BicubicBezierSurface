@@ -7,9 +7,11 @@ public class BicubicBezierSurface : MonoBehaviour {
     public int resolution = 20;
 
     Vector3[,] cp;
-    Vector3[,] bp;
+    [HideInInspector] public Vector3[,] bp;
 
     public Transform[,] controller;
+
+    public bool surfaceGizmo = true;
     
 	void Start () {
         
@@ -105,7 +107,7 @@ public class BicubicBezierSurface : MonoBehaviour {
 
     void OnDrawGizmos() {
         if (Application.isPlaying) {
-            drawBezierSurface();
+            if(surfaceGizmo) drawBezierSurface();
             drawController();
         }
     }
@@ -114,20 +116,20 @@ public class BicubicBezierSurface : MonoBehaviour {
         Gizmos.color = Color.white;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Gizmos.DrawWireSphere(cp[i, j], 0.1f);
+                Gizmos.DrawWireSphere(transform.TransformPoint(cp[i, j]), 0.1f);
             }
         }
 
         for (int i = 0; i < 4; i++) {
             // 横
-            Gizmos.DrawLine(cp[i, 0], cp[i, 1]);
-            Gizmos.DrawLine(cp[i, 1], cp[i, 2]);
-            Gizmos.DrawLine(cp[i, 2], cp[i, 3]);
+            Gizmos.DrawLine(transform.TransformPoint(cp[i, 0]), transform.TransformPoint(cp[i, 1]));
+            Gizmos.DrawLine(transform.TransformPoint(cp[i, 1]), transform.TransformPoint(cp[i, 2]));
+            Gizmos.DrawLine(transform.TransformPoint(cp[i, 2]), transform.TransformPoint(cp[i, 3]));
 
             //縦
-            Gizmos.DrawLine(cp[0, i], cp[1, i]);
-            Gizmos.DrawLine(cp[1, i], cp[2, i]);
-            Gizmos.DrawLine(cp[2, i], cp[3, i]);
+            Gizmos.DrawLine(transform.TransformPoint(cp[0, i]), transform.TransformPoint(cp[1, i]));
+            Gizmos.DrawLine(transform.TransformPoint(cp[1, i]), transform.TransformPoint(cp[2, i]));
+            Gizmos.DrawLine(transform.TransformPoint(cp[2, i]), transform.TransformPoint(cp[3, i]));
         }
     }
 
