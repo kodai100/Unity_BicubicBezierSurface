@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class MeshCreator : MonoBehaviour {
 
     public BicubicBezierSurface surfaceScript;
+    Mesh mesh;
 
-	
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
         CreateVertices();
 	}
 
     void CreateVertices() {
 
-        Mesh mesh;
+        
         GetComponent<MeshFilter>().mesh = mesh = new Mesh();
         mesh.name = "Procedural Grid";
 
@@ -36,5 +37,12 @@ public class MeshCreator : MonoBehaviour {
             }
         }
         mesh.triangles = triangles;
+    }
+
+    void OnGUI() {
+        if (GUILayout.Button("Create")) {
+            AssetDatabase.CreateAsset(mesh, "Assets/Meshes/BezierSurface.asset");
+            AssetDatabase.SaveAssets();
+        }
     }
 }
